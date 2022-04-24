@@ -2,7 +2,6 @@ import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../utils/hooks/useAuth";
 import get from "lodash/get";
-import UserService from "../../api/users/users.service";
 import { Provider } from "../../types/users";
 
 export const Login = () => {
