@@ -7,11 +7,11 @@ import { Provider } from "../../types/users";
 export const Login = () => {
   let navigate = useNavigate();
   let location = useLocation();
-  let auth = useAuth();
+  let { loginWithPassword } = useAuth();
 
   let from = get(location, "state.from.pathname", "/"); //location?.state?.from?.pathname || "/";
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     let formData = new FormData(event.currentTarget);
@@ -24,8 +24,8 @@ export const Login = () => {
         data: password,
       },
     };
-
-    auth.loginWithPassword(data);
+    console.log("old path ?", from);
+    await loginWithPassword(data);
     navigate(from, { replace: true });
   };
 

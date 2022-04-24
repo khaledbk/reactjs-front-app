@@ -8,29 +8,35 @@ import map from "lodash/map";
 import { AuthProvider } from "../../utils/auth/AuthProvider";
 import { PrivateRoute } from "../../routes/PrivateRoute";
 import { PublicRoute } from "../../routes/PublicRoute";
+import { Container } from "react-bootstrap";
 
 function App() {
   return (
     <AuthProvider>
       <div className="App">
-        <Routes>
-          {map(
-            routes,
-            ({ component, path, restrictedRoute }: AppRoute, index: number) => (
-              <Route
-                key={index}
-                path={path}
-                element={
-                  restrictedRoute ? (
-                    <PrivateRoute Component={component} />
-                  ) : (
-                    <PublicRoute Component={component} />
-                  )
-                }
-              />
-            )
-          )}
-        </Routes>
+        <Container fluid>
+          <Routes>
+            {map(
+              routes,
+              (
+                { component, path, restrictedRoute }: AppRoute,
+                index: number
+              ) => (
+                <Route
+                  key={index}
+                  path={path}
+                  element={
+                    restrictedRoute ? (
+                      <PrivateRoute Component={component} />
+                    ) : (
+                      <PublicRoute Component={component} />
+                    )
+                  }
+                />
+              )
+            )}
+          </Routes>
+        </Container>
       </div>
     </AuthProvider>
   );

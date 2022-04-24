@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { AuthContext, AuthenticationProvider } from ".";
 import { UserInterface, LoginInterface } from "../../types/users";
 
@@ -9,6 +9,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     auth: LoginInterface
   ): Promise<UserInterface> => {
     let user = await AuthenticationProvider.loginWithPassword(auth);
+    //AuthenticationProvider.currentUser = user;
     setCurrentUser(user);
     return user;
   };
@@ -36,6 +37,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
      */
     setCurrentUser(undefined);
   };
+
+  useEffect(() => {
+    console.log("currentUser ?", currentUser);
+  }, [currentUser]);
 
   let value = {
     currentUser,

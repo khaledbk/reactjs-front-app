@@ -10,9 +10,25 @@ export interface AuthContextType {
   me: (auth: LoginInterface) => Promise<UserInterface>;
   logout: () => void;
 }
-
+const currentUser: UserInterface = {
+  _id: "",
+  email: "",
+  username: "",
+  surname: "",
+  name: "",
+  credentials: {
+    hash: "",
+    isAdmin: false,
+    loginToken: "",
+    lastLogin: new Date(),
+    googleToken: "",
+  },
+  phoneNumber: "",
+  title: "",
+  address: "",
+};
 export const AuthenticationProvider = {
-  currentUser: undefined,
+  currentUser: currentUser,
   loginWithPassword: (auth: LoginInterface): Promise<UserInterface> => {
     return UsersService.loginWithPassword(auth);
   },
