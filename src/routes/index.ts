@@ -7,7 +7,7 @@
 import { Home } from "../pages/home";
 import { AdminDashboard } from "../pages/admin";
 import { Login } from "../pages/login";
-import { Employee } from "../pages/employee";
+import { Managment } from "../pages/managment";
 import React from "react";
 
 export type AppRoute = {
@@ -19,6 +19,12 @@ export type AppRoute = {
 
 export const routes = [
   {
+    routeName: "homeRoute",
+    restrictedRoute: false,
+    path: "/",
+    component: Home,
+  },
+  {
     routeName: "loginRoute",
     restrictedRoute: false,
     path: "/login",
@@ -28,18 +34,12 @@ export const routes = [
     routeName: "profileRoute",
     restrictedRoute: true,
     path: "/profile",
-    component: Employee,
-  },
-  {
-    routeName: "adminDashboardRoute",
-    restrictedRoute: true,
-    path: "/admin",
     component: AdminDashboard,
   },
   {
-    routeName: "homeRoute",
-    restrictedRoute: false,
-    path: "/",
-    component: Home,
+    routeName: "managmentRoute",
+    restrictedRoute: true,
+    path: "/managment",
+    component: Managment,
   },
 ];
