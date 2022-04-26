@@ -38,22 +38,22 @@ export const SideBar = () => {
           label: <div onClick={handleCollapse}>Hi, {currentUser.name}</div>,
         },
         {
-          key: 4,
+          key: 1,
           icon: <DashboardOutlined />,
           label: <Link to="/">Dashboard</Link>,
         },
         {
-          key: 1,
+          key: 2,
           icon: <UserOutlined />,
           label: <Link to="/profile">Profile</Link>,
         },
         {
-          key: 2,
+          key: 3,
           icon: <ApartmentOutlined />,
           label: <Link to="/managment">Managment</Link>,
         },
         {
-          key: 3,
+          key: 4,
           icon: <LoginOutlined onClick={logout} />,
           label: (
             <Link to="/login" onClick={logout}>
@@ -74,12 +74,12 @@ export const SideBar = () => {
           label: <div onClick={handleCollapse}>E. M. System</div>,
         },
         {
-          key: 2,
+          key: 1,
           icon: <DashboardOutlined />,
           label: <Link to="/">Dashboard</Link>,
         },
         {
-          key: 3,
+          key: 2,
           icon: <LoginOutlined />,
           label: <Link to="/login">Login</Link>,
         },
@@ -89,21 +89,6 @@ export const SideBar = () => {
 
   return (
     <Sider trigger={null} collapsible collapsed={!collapsed}>
-      {/* <div
-        className="ant-layout-sider-children"
-        style={{
-          position: "fixed",
-          minWidth: 96,
-          //width: collapsed ? 200 : 80,
-        }}
-      >
-        <Menu
-          theme="dark"
-          mode="inline"
-          defaultSelectedKeys={["0"]}
-          items={items}
-        />
-      </div> */}
       <Menu
         theme="dark"
         mode="inline"

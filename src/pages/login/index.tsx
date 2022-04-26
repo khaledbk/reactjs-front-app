@@ -11,6 +11,7 @@ import {
   EyeTwoTone,
   EyeInvisibleOutlined,
   GoogleOutlined,
+  LoginOutlined,
 } from "@ant-design/icons";
 export const Login = () => {
   const [showLoginError, setLoginError] = useState<boolean>(false);
@@ -99,10 +100,10 @@ export const Login = () => {
                     className="login-form-button"
                     htmlType="submit"
                     loading={submitting}
-                    icon={<UserOutlined />}
+                    icon={<LoginOutlined />}
                     style={{ width: "100%" }}
                     size={"large"}
-                    //shape="round"
+                    shape="round"
                   >
                     <span className="anticon anticon-google">Login</span>
                   </Button>
