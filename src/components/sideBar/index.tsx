@@ -50,7 +50,7 @@ export const SideBar = () => {
         {
           key: 3,
           icon: <ApartmentOutlined />,
-          label: <Link to="/managment">Managment</Link>,
+          label: <Link to="/management">Managment</Link>,
         },
         {
           key: 4,

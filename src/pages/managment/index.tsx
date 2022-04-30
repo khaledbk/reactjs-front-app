@@ -1,8 +1,11 @@
 import { Card, Col, Row } from "antd";
-import { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { DataTable } from "../../components/dataTable";
 import { EmployeeInterface } from "../../types/employees";
 import { useEmplyees } from "../../utils/hooks/useEmployees";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { Button } from "antd";
+import { useNavigate } from "react-router-dom";
 
 export const Managment = () => {
   return (
@@ -19,37 +22,21 @@ export const Managment = () => {
   );
 };
 
-const data = [
-  {
-    key: "1",
-    name: "John Brown",
-    age: 32,
-    address: "New York No. 1 Lake Park",
-  },
-  {
-    key: "2",
-    name: "Joe Black",
-    age: 42,
-    address: "London No. 1 Lake Park",
-  },
-  {
-    key: "3",
-    name: "Jim Green",
-    age: 32,
-    address: "Sidney No. 1 Lake Park",
-  },
-  {
-    key: "4",
-    name: "Jim Red",
-    age: 32,
-    address: "London No. 2 Lake Park",
-  },
-];
-
 const EmployeesList = () => {
   const { employees } = useEmplyees();
   useEffect(() => {}, [employees]);
+  const navigate = useNavigate();
+
   console.log("==>", employees);
+
+  const handleOnEdit = (item: EmployeeInterface) => {
+    console.log("[Edit Clicked]", item);
+    navigate(`/management/${item._id}`);
+  };
+
+  const handleOnDelete = (item: EmployeeInterface) => {
+    console.log("[Delete Clicked]", item);
+  };
   const columns = [
     {
       title: "Name",
@@ -71,6 +58,26 @@ const EmployeesList = () => {
       dataIndex: "address",
       key: "address",
       filtered: true,
+    },
+    {
+      title: "Actions",
+      dataIndex: "",
+      key: "actions",
+      render: (item: EmployeeInterface) => (
+        <React.Fragment>
+          <Button
+            onClick={() => handleOnEdit(item)}
+            icon={<EditOutlined />}
+            shape="circle"
+            style={{ marginRight: 10 }}
+          />
+          <Button
+            icon={<DeleteOutlined />}
+            shape="circle"
+            onClick={() => handleOnDelete(item)}
+          />
+        </React.Fragment>
+      ),
     },
   ];
   return (

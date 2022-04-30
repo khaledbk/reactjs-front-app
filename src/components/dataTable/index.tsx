@@ -15,6 +15,7 @@ export interface ColumnInterface {
   key: string;
   width: string;
   filtred: boolean;
+  boolean: () => React.FC;
 }
 
 export const DataTable = ({ id, columns, data }: DataTableProps) => {

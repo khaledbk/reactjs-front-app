@@ -8,6 +8,7 @@ import { Home } from "../pages/home";
 import { AdminDashboard } from "../pages/admin";
 import { Login } from "../pages/login";
 import { Managment } from "../pages/managment";
+import { EditEmployee } from "../pages/managment/editEmployee";
 import React from "react";
 
 export type AppRoute = {
@@ -18,6 +19,12 @@ export type AppRoute = {
 };
 
 export const routes = [
+  {
+    routeName: "editEmployeeRoute",
+    restrictedRoute: true,
+    path: "/management/:id",
+    component: EditEmployee,
+  },
   {
     routeName: "homeRoute",
     restrictedRoute: false,
@@ -39,7 +46,7 @@ export const routes = [
   {
     routeName: "managmentRoute",
     restrictedRoute: true,
-    path: "/managment",
+    path: "/management",
     component: Managment,
   },
 ];

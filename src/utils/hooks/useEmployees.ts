@@ -4,10 +4,17 @@ import EmployeesService from "../../api/employees/employees.service";
 
 export function useEmplyees() {
   const [employees, setEmployees] = useState<EmployeeInterface[]>([]);
+  const [currentEmployee, setEmployee] = useState<EmployeeInterface>();
 
   const getEmpleeyees = async () => {
-    EmployeesService.getEmployess().then((res: EmployeeInterface[]) => {
+    EmployeesService.getEmployees().then((res: EmployeeInterface[]) => {
       setEmployees(res);
+    });
+  };
+
+  const getEmployee = async (_id: string) => {
+    EmployeesService.getEmployee(_id).then((res: EmployeeInterface) => {
+      setEmployee(res);
     });
   };
 
@@ -18,5 +25,8 @@ export function useEmplyees() {
 
   return {
     employees,
+    currentEmployee,
+    getEmployee,
+    setEmployee,
   };
 }

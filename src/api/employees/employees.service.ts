@@ -3,10 +3,17 @@ import get from "lodash/get";
 import { AxiosResponse } from "axios";
 import { EmployeeInterface } from "../../types/employees";
 class Employees {
-  async getEmployess(): Promise<EmployeeInterface[]> {
+  async getEmployees(): Promise<EmployeeInterface[]> {
     const data = await rest
       .get("/api/employees")
       .then((res: AxiosResponse): EmployeeInterface[] => get(res, "data", []));
+    return data;
+  }
+
+  async getEmployee(_id: string): Promise<EmployeeInterface> {
+    const data = await rest
+      .get(`/api/employee/${_id}`)
+      .then((res: AxiosResponse): EmployeeInterface => get(res, "data", {}));
     return data;
   }
 }

@@ -1,11 +1,10 @@
-import React, { useState } from "react";
-import { Card, Row, Col, Image, Divider, Input, Button, Select } from "antd";
+import { useState } from "react";
+import { Card, Row, Col, Image, Divider, Input, Button } from "antd";
 import {
   UserOutlined,
   IdcardOutlined,
   PhoneOutlined,
   TeamOutlined,
-  PrinterOutlined,
   MailOutlined,
   PlusSquareOutlined,
 } from "@ant-design/icons";
