@@ -28,6 +28,16 @@ class Employees {
     rest.post("/api/updateEmployee", employee);
     return;
   }
+
+  async deleteEmployee(employeeId: string): Promise<boolean> {
+    return rest
+      .post(`/api/deleteEmployee/`, { employeeId })
+      .then((res: AxiosResponse) => {
+        const deletResult = get(res, "data", false);
+        if (deletResult) return true;
+        return false;
+      });
+  }
 }
 
 export default new Employees();

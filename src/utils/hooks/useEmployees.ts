@@ -22,6 +22,8 @@ export function useEmplyees() {
 
   const updateEmployee = EmployeesService.updateEmployee;
 
+  const deleteEmployee = EmployeesService.deleteEmployee;
+
   useEffect(() => {
     getEmpleeyees();
     //to catch the changes of the employees array json is the best to catch the diff
@@ -34,5 +36,6 @@ export function useEmplyees() {
     setEmployee,
     createEmployee,
     updateEmployee,
+    deleteEmployee,
   };
 }

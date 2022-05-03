@@ -15,7 +15,9 @@ export const Managment = () => {
   const { createEmployee } = useEmplyees();
   const navigate = useNavigate();
   const handleAddEMployee = async () => {
+    //create and get the new employee id
     const employeeId = await createEmployee();
+    //navigate to the new employee account
     navigate(`/management/${employeeId}`);
   };
   return (
@@ -61,19 +63,21 @@ export const Managment = () => {
 };
 
 const EmployeesList = () => {
-  const { employees } = useEmplyees();
+  const { employees, deleteEmployee } = useEmplyees();
   useEffect(() => {}, [employees]);
   const navigate = useNavigate();
 
-  console.log("==>", employees);
-
   const handleOnEdit = (item: EmployeeInterface) => {
-    console.log("[Edit Clicked]", item);
     navigate(`/management/${item._id}`);
   };
 
-  const handleOnDelete = (item: EmployeeInterface) => {
-    console.log("[Delete Clicked]", item);
+  const handleOnDelete = async (item: EmployeeInterface) => {
+    const deleteResult = await deleteEmployee(item?._id);
+    if (deleteResult) {
+      console.log("[DELETE]", item._id, "deleted");
+    } else {
+      console.log("[DELETE]", item._id, "NOT deleted");
+    }
   };
   const columns = [
     {
@@ -99,7 +103,8 @@ const EmployeesList = () => {
     },
     {
       title: "Actions",
-      dataIndex: "",
+      dataIndex: "actions",
+      align: "right",
       key: "actions",
       render: (item: EmployeeInterface) => (
         <React.Fragment>
