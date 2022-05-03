@@ -18,6 +18,8 @@ export function useEmplyees() {
     });
   };
 
+  const createEmployee = EmployeesService.createEmployee;
+
   useEffect(() => {
     getEmpleeyees();
     //to catch the changes of the employees array json is the best to catch the diff
@@ -28,5 +30,6 @@ export function useEmplyees() {
     currentEmployee,
     getEmployee,
     setEmployee,
+    createEmployee,
   };
 }

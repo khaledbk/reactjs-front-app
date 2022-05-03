@@ -3,18 +3,56 @@ import React, { useEffect } from "react";
 import { DataTable } from "../../components/dataTable";
 import { EmployeeInterface } from "../../types/employees";
 import { useEmplyees } from "../../utils/hooks/useEmployees";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import {
+  DeleteOutlined,
+  EditOutlined,
+  UserAddOutlined,
+} from "@ant-design/icons";
 import { Button } from "antd";
 import { useNavigate } from "react-router-dom";
 
 export const Managment = () => {
+  const { createEmployee } = useEmplyees();
+  const navigate = useNavigate();
+  const handleAddEMployee = async () => {
+    const employeeId = await createEmployee();
+    navigate(`/management/${employeeId}`);
+  };
   return (
     <Row gutter={[16, 16]}>
       <Col sm={24} md={24} lg={24}>
-        Managment
-      </Col>
-      <Col sm={24} md={24} lg={24}>
-        <Card hoverable>
+        <Card
+          hoverable
+          title={
+            <React.Fragment>
+              <span
+                className="anticon anticon-google"
+                style={{
+                  position: "absolute",
+                  left: 20,
+                }}
+              >
+                <b>Management</b>
+              </span>
+              <span
+                className="anticon anticon-google"
+                style={{
+                  position: "absolute",
+                  right: 20,
+                  top: 8,
+                }}
+              >
+                <Button
+                  shape={"round"}
+                  onClick={handleAddEMployee}
+                  icon={<UserAddOutlined />}
+                >
+                  Add
+                </Button>
+              </span>
+            </React.Fragment>
+          }
+        >
           <EmployeesList />
         </Card>
       </Col>
@@ -81,6 +119,24 @@ const EmployeesList = () => {
     },
   ];
   return (
-    <DataTable data={employees} filters={{}} columns={columns} id={"key"} />
+    <React.Fragment>
+      <DataTable
+        data={employees}
+        filters={{}}
+        columns={columns}
+        id={"key"}
+        title={
+          <span
+            className="anticon anticon-google"
+            style={{
+              position: "absolute",
+              left: 20,
+            }}
+          >
+            <b>Management</b>
+          </span>
+        }
+      />
+    </React.Fragment>
   );
 };

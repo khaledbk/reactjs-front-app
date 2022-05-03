@@ -7,6 +7,7 @@ type DataTableProps = {
   columns: any[];
   filters: any;
   id: string;
+  title: any;
 };
 
 export interface ColumnInterface {

@@ -16,6 +16,13 @@ class Employees {
       .then((res: AxiosResponse): EmployeeInterface => get(res, "data", {}));
     return data;
   }
+
+  async createEmployee(): Promise<string> {
+    const data = await rest
+      .get(`/api/insertEmployee/`)
+      .then((res: AxiosResponse): string => get(res, "data", {}));
+    return data;
+  }
 }
 
 export default new Employees();
