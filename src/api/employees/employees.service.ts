@@ -23,6 +23,11 @@ class Employees {
       .then((res: AxiosResponse): string => get(res, "data", {}));
     return data;
   }
+
+  async updateEmployee(employee: EmployeeInterface): Promise<void> {
+    rest.post("/api/updateEmployee", employee);
+    return;
+  }
 }
 
 export default new Employees();
