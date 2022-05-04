@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { EmployeeInterface } from "../../../types/employees";
-import { Card, Row, Col, Image, Divider, Input, Button } from "antd";
+import { Card, Row, Col, Image, Divider, Input, Button, message } from "antd";
 import {
   UserOutlined,
   IdcardOutlined,
@@ -30,8 +30,12 @@ export const EditEmployee = () => {
   const [submitting, setSubmitting] = useState<boolean>(false);
   const handleValidate = () => {};
   const handleSubmitForm = async (values: EmployeeInterface): Promise<void> => {
-    console.log("[UPDATE]", values);
-    await updateEmployee(values);
+    //console.log("[UPDATE]", values);
+    setSubmitting(true);
+    updateEmployee(values).then((res) => {
+      setSubmitting(false);
+      message.success("Employee is up to date");
+    });
   };
 
   const handleBack = () => {
@@ -83,7 +87,6 @@ export const EditEmployee = () => {
           onSubmit={handleSubmitForm}
         >
           {({ values, errors, handleChange, handleSubmit }) => {
-            console.log("[VALUES]", values);
             return (
               <>
                 <Row gutter={[16, 16]}>
@@ -96,14 +99,14 @@ export const EditEmployee = () => {
                             "https://www.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png"
                           }
                         />
-                        <Row justify="center" align="middle">
+                        {/* <Row justify="center" align="middle">
                           <Col xs={24} md={24} lg={24}>
                             <IdcardOutlined />
                           </Col>
                           <Col xs={24} md={24} lg={24}>
                             {values.address}
                           </Col>
-                        </Row>
+                        </Row> */}
                       </Col>
                     </Row>
                   </Col>
@@ -184,9 +187,6 @@ export const EditEmployee = () => {
                           id="title"
                           name="title"
                           size="large"
-                          //disabled={
-                          //  !isEmpty(get(props, "currentClient.userName", false))
-                          // }
                           value={values.title}
                           onChange={handleChange}
                           placeholder="Title"
@@ -204,9 +204,6 @@ export const EditEmployee = () => {
                           id="username"
                           name="username"
                           size="large"
-                          //disabled={
-                          //  !isEmpty(get(props, "currentClient.userName", false))
-                          // }
                           value={values.username}
                           onChange={handleChange}
                           placeholder="Username"
@@ -216,6 +213,23 @@ export const EditEmployee = () => {
                         />
                         {errors.username ? (
                           <div className="formik-error">{errors.username}</div>
+                        ) : null}
+                        <Divider />
+                      </Col>
+                      <Col xs={24} md={24} lg={24}>
+                        <Input
+                          id="address"
+                          name="address"
+                          size="large"
+                          value={values.address}
+                          onChange={handleChange}
+                          placeholder="Address"
+                          prefix={
+                            <IdcardOutlined className="site-form-item-icon" />
+                          }
+                        />
+                        {errors.address ? (
+                          <div className="formik-error">{errors.address}</div>
                         ) : null}
                         <Divider />
                       </Col>
@@ -234,7 +248,7 @@ export const EditEmployee = () => {
                       icon={<PlusSquareOutlined />}
                       size={"large"}
                     >
-                      Update
+                      {currentEmployee?.name === "" ? "Save" : "Update"}
                     </Button>
                   </Col>
                 </Row>

@@ -1,5 +1,5 @@
-import { Card, Col, Row } from "antd";
-import React, { useEffect } from "react";
+import { Card, Col, Row, message } from "antd";
+import React, { useEffect, useState } from "react";
 import { DataTable } from "../../components/dataTable";
 import { EmployeeInterface } from "../../types/employees";
 import { useEmplyees } from "../../utils/hooks/useEmployees";
@@ -10,6 +10,7 @@ import {
 } from "@ant-design/icons";
 import { Button } from "antd";
 import { useNavigate } from "react-router-dom";
+import ConfrimationModal from "../../components/confirmationModal";
 
 export const Managment = () => {
   const { createEmployee } = useEmplyees();
@@ -47,9 +48,10 @@ export const Managment = () => {
                 <Button
                   shape={"round"}
                   onClick={handleAddEMployee}
+                  type="primary"
                   icon={<UserAddOutlined />}
                 >
-                  Add
+                  <span className="anticon">Add</span>
                 </Button>
               </span>
             </React.Fragment>
@@ -64,6 +66,8 @@ export const Managment = () => {
 
 const EmployeesList = () => {
   const { employees, deleteEmployee } = useEmplyees();
+  const [confirmationDelete, setConfirmationDelete] = useState<boolean>(false);
+  const [toDelete, setTotDelete] = useState<EmployeeInterface>();
   useEffect(() => {}, [employees]);
   const navigate = useNavigate();
 
@@ -71,63 +75,98 @@ const EmployeesList = () => {
     navigate(`/management/${item._id}`);
   };
 
-  const handleOnDelete = async (item: EmployeeInterface) => {
-    const deleteResult = await deleteEmployee(item?._id);
-    if (deleteResult) {
-      console.log("[DELETE]", item._id, "deleted");
-    } else {
-      console.log("[DELETE]", item._id, "NOT deleted");
+  const handleOnDelete = async () => {
+    if (toDelete) {
+      const deleteResult = await deleteEmployee(toDelete?._id);
+      if (deleteResult) {
+        message.success("Employee deleted successfully!");
+        //to refetch
+        handleCloseConfirmationDelete();
+        //console.log("[DELETE]", toDelete._id, "deleted");
+      } else {
+        //console.log("[DELETE]", toDelete._id, "NOT deleted");
+        message.error("Cannot delete this employee!");
+        handleCloseConfirmationDelete();
+      }
     }
   };
+
+  const handleConfirmDelete = (item: EmployeeInterface) => {
+    setTotDelete(item);
+    setConfirmationDelete(true);
+  };
+
+  const handleCloseConfirmationDelete = () => {
+    setConfirmationDelete(false);
+    setTotDelete(undefined);
+  };
+
   const columns = [
     {
       title: "Name",
       dataIndex: "name",
       key: "name",
+      responsive: ["md"],
     },
     {
       title: "Surname",
       dataIndex: "surname",
       key: "surname",
+      responsive: ["md"],
     },
     {
       title: "Email",
       dataIndex: "email",
       key: "email",
+      responsive: ["md"],
     },
     {
       title: "Address",
       dataIndex: "address",
       key: "address",
       filtered: true,
+      responsive: ["md"],
     },
     {
       title: "Actions",
-      dataIndex: "actions",
+      dataIndex: "",
       align: "right",
       key: "actions",
-      render: (item: EmployeeInterface) => (
-        <React.Fragment>
-          <Button
-            onClick={() => handleOnEdit(item)}
-            icon={<EditOutlined />}
-            shape="circle"
-            style={{ marginRight: 10 }}
-          />
-          <Button
-            icon={<DeleteOutlined />}
-            shape="circle"
-            onClick={() => handleOnDelete(item)}
-          />
-        </React.Fragment>
-      ),
+      responsive: ["md"],
+      render: (item: EmployeeInterface) => {
+        return (
+          <React.Fragment>
+            <Button
+              onClick={() => handleOnEdit(item)}
+              icon={<EditOutlined />}
+              shape="circle"
+              style={{ marginRight: 10 }}
+            />
+            <Button
+              icon={<DeleteOutlined />}
+              shape="circle"
+              onClick={() => handleConfirmDelete(item)}
+            />
+          </React.Fragment>
+        );
+      },
     },
   ];
   return (
     <React.Fragment>
+      <ConfrimationModal
+        content={`Do you want to delete "${toDelete?.name} ${toDelete?.surname}"`}
+        isVisible={confirmationDelete}
+        title="Employee Deletion"
+        onConfirm={handleOnDelete}
+        onCancel={handleCloseConfirmationDelete}
+      />
       <DataTable
         data={employees}
         filters={{}}
+        pagination={{
+          position: ["bottomCenter"],
+        }}
         columns={columns}
         id={"key"}
         title={

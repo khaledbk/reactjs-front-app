@@ -8,6 +8,7 @@ type DataTableProps = {
   filters: any;
   id: string;
   title: any;
+  pagination: any;
 };
 
 export interface ColumnInterface {
@@ -19,7 +20,12 @@ export interface ColumnInterface {
   boolean: () => React.FC;
 }
 
-export const DataTable = ({ id, columns, data }: DataTableProps) => {
+export const DataTable = ({
+  pagination,
+  id,
+  columns,
+  data,
+}: DataTableProps) => {
   //console.log(data);
   const [searchText, setSerchText] = useState<string>("");
   const [searchedColumn, setSearchColumn] = useState<string>();
@@ -92,48 +98,9 @@ export const DataTable = ({ id, columns, data }: DataTableProps) => {
       </div>
     );
   };
-  //   const columns = [
-  //     {
-  //       title: "Name",
-  //       dataIndex: "name",
-  //       key: "name",
-  //       width: "30%",
-  //       // ...getColumnSearchProps("name"),
-  //     },
-  //     {
-  //       title: "Age",
-  //       dataIndex: "age",
-  //       key: "age",
-  //       width: "20%",
-  //       //...getColumnSearchProps("age"),
-  //     },
-  //     {
-  //       title: "Address",
-  //       dataIndex: "address",
-  //       key: "address",
-  //       filterDropdown: ({
-  //         setSelectedKeys,
-  //         selectedKeys,
-  //         confirm,
-  //         clearFilters,
-  //       }: any) =>
-  //         getFilters(
-  //           setSelectedKeys,
-  //           selectedKeys,
-  //           confirm,
-  //           clearFilters,
-  //           "address"
-  //         ),
-  //       //...getColumnSearchProps("address"),
-  //       // sorter: (
-  //       //   a: { address: string | any[] },
-  //       //   b: { address: string | any[] }
-  //       // ) => a.address.length - b.address.length,
-  //       // sortDirections: ["descend", "ascend"],
-  //     },
-  //   ];
   return (
     <Table
+      pagination={pagination}
       columns={columns}
       dataSource={data}
       rowKey="{record => record.key}"
