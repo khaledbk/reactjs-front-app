@@ -63,16 +63,20 @@ export const DataTable = ({
           />
           <Space>
             <Button
-              onClick={() => handleReset(clearFilters, dataIndex)}
-              size="small"
-              icon={<ClearOutlined />}
-            />
-            <Button
               type="primary"
               onClick={() => handleSearch()}
               icon={<SearchOutlined />}
               size="small"
-            />
+            >
+              Search
+            </Button>
+            <Button
+              onClick={() => handleReset(clearFilters, dataIndex)}
+              size="small"
+              icon={<ClearOutlined />}
+            >
+              Reset filters
+            </Button>
           </Space>
         </div>
       ),
