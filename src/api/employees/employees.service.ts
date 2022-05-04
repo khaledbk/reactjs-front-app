@@ -3,9 +3,9 @@ import get from "lodash/get";
 import { AxiosResponse } from "axios";
 import { EmployeeInterface } from "../../types/employees";
 class Employees {
-  async getEmployees(): Promise<EmployeeInterface[]> {
+  async getEmployees(filter: any): Promise<EmployeeInterface[]> {
     const data = await rest
-      .get("/api/employees")
+      .post("/api/employees", { filter })
       .then((res: AxiosResponse): EmployeeInterface[] => get(res, "data", []));
     return data;
   }

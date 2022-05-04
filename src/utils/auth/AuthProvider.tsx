@@ -57,7 +57,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
-    console.log("currentUser ?", currentUser);
+    //console.log("currentUser ?", currentUser);
   }, [currentUser]);
 
   let value = {

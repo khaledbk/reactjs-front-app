@@ -5,9 +5,10 @@ import EmployeesService from "../../api/employees/employees.service";
 export function useEmplyees() {
   const [employees, setEmployees] = useState<EmployeeInterface[]>([]);
   const [currentEmployee, setEmployee] = useState<EmployeeInterface>();
+  const [employeesFilter, setEmployeesFilter] = useState({});
 
-  const getEmpleeyees = async () => {
-    EmployeesService.getEmployees().then((res: EmployeeInterface[]) => {
+  const getEmpleeyees = async (filter: any) => {
+    EmployeesService.getEmployees(filter).then((res: EmployeeInterface[]) => {
       setEmployees(res);
     });
   };
@@ -25,7 +26,16 @@ export function useEmplyees() {
   const deleteEmployee = EmployeesService.deleteEmployee;
 
   useEffect(() => {
-    getEmpleeyees();
+    getEmpleeyees({
+      query: {
+        match: {
+          field: "credentials.isAdmin",
+          condition: {
+            eq: false,
+          },
+        },
+      },
+    });
     //to catch the changes of the employees array json is the best to catch the diff
   }, [JSON.stringify(employees)]);
 
