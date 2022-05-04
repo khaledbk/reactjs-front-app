@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 import ConfrimationModal from "../../components/confirmationModal";
 
 export const Managment = () => {
-  const { createEmployee } = useEmplyees();
+  const { createEmployee, employees } = useEmplyees();
   const navigate = useNavigate();
   const handleAddEMployee = async () => {
     //create and get the new employee id
@@ -65,10 +65,13 @@ export const Managment = () => {
 };
 
 const EmployeesList = () => {
-  const { employees, deleteEmployee } = useEmplyees();
+  const { employees, deleteEmployee, refetchList } = useEmplyees();
   const [confirmationDelete, setConfirmationDelete] = useState<boolean>(false);
   const [toDelete, setTotDelete] = useState<EmployeeInterface>();
-  useEffect(() => {}, [employees]);
+  useEffect(() => {
+    console.log("This is the new list", employees);
+    refetchList();
+  }, [JSON.stringify(employees)]);
   const navigate = useNavigate();
 
   const handleOnEdit = (item: EmployeeInterface) => {
@@ -79,6 +82,7 @@ const EmployeesList = () => {
     if (toDelete) {
       const deleteResult = await deleteEmployee(toDelete?._id);
       if (deleteResult) {
+        refetchList();
         message.success("Employee deleted successfully!");
         //to refetch
         handleCloseConfirmationDelete();
@@ -106,25 +110,28 @@ const EmployeesList = () => {
       title: "Name",
       dataIndex: "name",
       key: "name",
+      filtred: true,
       responsive: ["md"],
     },
     {
       title: "Surname",
       dataIndex: "surname",
       key: "surname",
+      filtred: true,
       responsive: ["md"],
     },
     {
       title: "Email",
       dataIndex: "email",
       key: "email",
+      filtred: true,
       responsive: ["md"],
     },
     {
       title: "Address",
       dataIndex: "address",
       key: "address",
-      filtered: true,
+
       responsive: ["md"],
     },
     {
@@ -152,6 +159,7 @@ const EmployeesList = () => {
       },
     },
   ];
+
   return (
     <React.Fragment>
       <ConfrimationModal

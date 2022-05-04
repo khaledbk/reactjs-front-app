@@ -1,6 +1,8 @@
 import { Space, Table, Input, Button } from "antd";
-import React, { useState } from "react";
-import { SearchOutlined } from "@ant-design/icons";
+import React, { useEffect, useState } from "react";
+import { SearchOutlined, ClearOutlined } from "@ant-design/icons";
+import { assign, map, get, unset } from "lodash";
+import { useEmplyees } from "../../utils/hooks/useEmployees";
 
 type DataTableProps = {
   data: any[];
@@ -26,82 +28,74 @@ export const DataTable = ({
   columns,
   data,
 }: DataTableProps) => {
-  //console.log(data);
-  const [searchText, setSerchText] = useState<string>("");
-  const [searchedColumn, setSearchColumn] = useState<string>();
-  const handleSearch = (
-    selectedKeys: string,
-    confirm: any,
-    dataIndex: string
-  ) => {
-    confirm();
-    setSerchText(selectedKeys[0]);
-    setSearchColumn(dataIndex);
+  const [tableFilter, setTableFilter] = useState({});
+  const { handleSetFilter, refetchList } = useEmplyees();
+
+  const handleSearch = () => {
+    handleSetFilter(tableFilter);
+    refetchList();
   };
 
-  const handleReset = (clearFilters: any) => {
+  const handleReset = (clearFilters: () => void, dataIndex: string) => {
     clearFilters();
-    setSerchText("");
+    setTableFilter(assign({}, unset(tableFilter, `${dataIndex}`)));
+    handleSearch();
+    refetchList();
   };
-  let searchInput: any;
 
-  const getFilters = (
-    setSelectedKeys: (e: string[]) => void,
-    selectedKeys: string,
-    confirm: (options: any) => void,
-    clearFilters: () => void,
-    dataIndex: string
-  ) => {
-    return (
-      <div style={{ padding: 8 }}>
-        <Input
-          ref={(node) => {
-            searchInput = node;
-          }}
-          placeholder={`Search Address`}
-          value={selectedKeys[0]}
-          onChange={(e) =>
-            setSelectedKeys(e.target.value ? [e.target.value] : [])
-          }
-          onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
-          style={{ marginBottom: 8, display: "block" }}
-        />
-        <Space>
-          <Button
-            type="primary"
-            onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
-            icon={<SearchOutlined />}
-            size="small"
-            style={{ width: 90 }}
-          >
-            Search
-          </Button>
-          <Button
-            onClick={() => handleReset(clearFilters)}
-            size="small"
-            style={{ width: 90 }}
-          >
-            Reset
-          </Button>
-          <Button
-            type="link"
-            size="small"
-            onClick={() => {
-              confirm({ closeDropdown: false });
-              setSerchText(selectedKeys[0]);
-              setSearchColumn(dataIndex);
+  const getColumnSearchProps = (dataIndex: string) => {
+    return {
+      filterDropdown: ({ clearFilters }: any) => (
+        <div style={{ padding: 8 }}>
+          <Input
+            ref={(node) => node}
+            placeholder={`Search ${dataIndex}`}
+            value={get(tableFilter, `${dataIndex}`, "")}
+            onChange={(e) => {
+              setTableFilter(
+                assign({}, tableFilter, {
+                  [`${dataIndex}`]: e.target.value,
+                })
+              );
             }}
-          >
-            Filter
-          </Button>
-        </Space>
-      </div>
-    );
+            onPressEnter={() => handleSearch()}
+            style={{ marginBottom: 8, display: "block" }}
+          />
+          <Space>
+            <Button
+              onClick={() => handleReset(clearFilters, dataIndex)}
+              size="small"
+              icon={<ClearOutlined />}
+            />
+            <Button
+              type="primary"
+              onClick={() => handleSearch()}
+              icon={<SearchOutlined />}
+              size="small"
+            />
+          </Space>
+        </div>
+      ),
+      filterIcon: (filtered: boolean) => (
+        <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
+      ),
+      render: (text: string) => <React.Fragment>{text}</React.Fragment>,
+    };
   };
+  const columnProps = map(columns, (col: any) => {
+    if (col?.filtred)
+      return assign({}, col, {
+        ...getColumnSearchProps(col?.dataIndex),
+      });
+    return col;
+  });
+  useEffect(() => {
+    handleSearch();
+  }, [data, tableFilter]);
   return (
     <Table
       pagination={pagination}
-      columns={columns}
+      columns={columnProps}
       dataSource={data}
       rowKey="{record => record.key}"
     />
