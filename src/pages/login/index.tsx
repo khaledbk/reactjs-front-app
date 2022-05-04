@@ -13,6 +13,7 @@ import {
   GoogleOutlined,
   LoginOutlined,
 } from "@ant-design/icons";
+
 export const Login = () => {
   const [showLoginError, setLoginError] = useState<boolean>(false);
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -34,7 +35,23 @@ export const Login = () => {
     navigate(from, { replace: true });
   };
 
-  const handleValidate = () => {};
+  const handleValidate = (values: FormikValues) => {
+    const errors: FormikValues = {};
+
+    if (!values.email) {
+      errors.email = "*Required";
+    } else if (
+      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
+    ) {
+      errors.email = "*Invalid email address";
+    }
+
+    if (!values.password) {
+      errors.password = "*Required";
+    }
+
+    return errors;
+  };
 
   const formikHook = useFormik({
     initialValues: { email: "", password: "" },
@@ -64,7 +81,16 @@ export const Login = () => {
                 prefix={<UserOutlined className="site-form-item-icon" />}
               />
               {formikHook.errors.email ? (
-                <div className="formik-error">{formikHook.errors.email}</div>
+                <div
+                  style={{
+                    color: "red",
+                    left: 25,
+                    position: "absolute",
+                    fontSize: "smaller",
+                  }}
+                >
+                  {formikHook.errors.email}
+                </div>
               ) : null}
               <Divider />
               <Input.Password
@@ -79,7 +105,16 @@ export const Login = () => {
                 }
               />
               {formikHook.errors.password ? (
-                <div className="formik-error">{formikHook.errors.password}</div>
+                <div
+                  style={{
+                    color: "red",
+                    left: 25,
+                    position: "absolute",
+                    fontSize: "smaller",
+                  }}
+                >
+                  {formikHook.errors.password}
+                </div>
               ) : null}
               {showLoginError && (
                 <>

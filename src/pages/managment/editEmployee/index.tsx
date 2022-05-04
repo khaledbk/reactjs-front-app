@@ -11,7 +11,7 @@ import {
   PlusSquareOutlined,
   ArrowLeftOutlined,
 } from "@ant-design/icons";
-import { Formik } from "formik";
+import { Formik, FormikValues } from "formik";
 
 import { isEmpty, get } from "lodash";
 import { useEmplyees } from "../../../utils/hooks/useEmployees";
@@ -28,7 +28,44 @@ export const EditEmployee = () => {
 
   const [showLoginError, setLoginError] = useState<boolean>(false);
   const [submitting, setSubmitting] = useState<boolean>(false);
-  const handleValidate = () => {};
+
+  const handleValidate = (values: FormikValues) => {
+    const errors: FormikValues = {};
+
+    if (!values.email) {
+      errors.email = "*Required";
+    } else if (
+      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
+    ) {
+      errors.email = "*Invalid email address";
+    }
+
+    if (!values.username) {
+      errors.username = "*Required";
+    }
+
+    if (!values.name) {
+      errors.name = "*Required";
+    }
+
+    if (!values.surname) {
+      errors.surname = "*Required";
+    }
+
+    if (!values.title) {
+      errors.title = "*Required";
+    }
+
+    if (!values.address) {
+      errors.address = "*Required";
+    }
+
+    if (!values.phoneNumber) {
+      errors.phoneNumber = "*Required";
+    }
+
+    return errors;
+  };
   const handleSubmitForm = async (values: EmployeeInterface): Promise<void> => {
     //console.log("[UPDATE]", values);
     setSubmitting(true);
@@ -125,7 +162,16 @@ export const EditEmployee = () => {
                           }
                         />
                         {errors.name ? (
-                          <div className="formik-error">{errors.name}</div>
+                          <div
+                            style={{
+                              color: "red",
+                              left: 10,
+                              position: "absolute",
+                              fontSize: "smaller",
+                            }}
+                          >
+                            {errors.name}
+                          </div>
                         ) : null}
                         <Divider />
                       </Col>
@@ -142,7 +188,16 @@ export const EditEmployee = () => {
                           }
                         />
                         {errors.surname ? (
-                          <div className="formik-error">{errors.surname}</div>
+                          <div
+                            style={{
+                              color: "red",
+                              left: 10,
+                              position: "absolute",
+                              fontSize: "smaller",
+                            }}
+                          >
+                            {errors.surname}
+                          </div>
                         ) : null}
                         <Divider />
                       </Col>
@@ -159,7 +214,14 @@ export const EditEmployee = () => {
                           }
                         />
                         {errors.phoneNumber ? (
-                          <div className="formik-error">
+                          <div
+                            style={{
+                              color: "red",
+                              left: 10,
+                              position: "absolute",
+                              fontSize: "smaller",
+                            }}
+                          >
                             {errors.phoneNumber}
                           </div>
                         ) : null}
@@ -178,7 +240,16 @@ export const EditEmployee = () => {
                           }
                         />
                         {errors.email ? (
-                          <div className="formik-error">{errors.email}</div>
+                          <div
+                            style={{
+                              color: "red",
+                              left: 10,
+                              position: "absolute",
+                              fontSize: "smaller",
+                            }}
+                          >
+                            {errors.email}
+                          </div>
                         ) : null}
                         <Divider />
                       </Col>
@@ -195,7 +266,16 @@ export const EditEmployee = () => {
                           }
                         />
                         {errors.title ? (
-                          <div className="formik-error">{errors.title}</div>
+                          <div
+                            style={{
+                              color: "red",
+                              left: 10,
+                              position: "absolute",
+                              fontSize: "smaller",
+                            }}
+                          >
+                            {errors.title}
+                          </div>
                         ) : null}
                         <Divider />
                       </Col>
@@ -212,7 +292,16 @@ export const EditEmployee = () => {
                           }
                         />
                         {errors.username ? (
-                          <div className="formik-error">{errors.username}</div>
+                          <div
+                            style={{
+                              color: "red",
+                              left: 10,
+                              position: "absolute",
+                              fontSize: "smaller",
+                            }}
+                          >
+                            {errors.username}
+                          </div>
                         ) : null}
                         <Divider />
                       </Col>
@@ -229,7 +318,16 @@ export const EditEmployee = () => {
                           }
                         />
                         {errors.address ? (
-                          <div className="formik-error">{errors.address}</div>
+                          <div
+                            style={{
+                              color: "red",
+                              left: 10,
+                              position: "absolute",
+                              fontSize: "smaller",
+                            }}
+                          >
+                            {errors.address}
+                          </div>
                         ) : null}
                         <Divider />
                       </Col>
