@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../utils/hooks/useAuth";
 import get from "lodash/get";
@@ -19,7 +19,7 @@ export const Login = () => {
   const [submitting, setSubmitting] = useState<boolean>(false);
   let navigate = useNavigate();
   let location = useLocation();
-  let { loginWithPassword } = useAuth();
+  let { loginWithPassword, currentUser } = useAuth();
 
   let from = get(location, "state.from.pathname", "/"); //location?.state?.from?.pathname || "/";
 
@@ -62,6 +62,12 @@ export const Login = () => {
   const handleLoginWithGoogle = () => {
     console.log("To log in with google");
   };
+
+  useEffect(() => {
+    if (currentUser) {
+      navigate(from, { replace: true });
+    }
+  }, [currentUser]);
   return (
     <React.Fragment>
       <Row

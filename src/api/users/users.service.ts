@@ -19,8 +19,18 @@ class UserService {
   }
 
   loginWithToken(auth: LoginInterface): Promise<UserInterface> {
-    console.log("[loginWithToken]", auth);
-    return rest.get("/api/auth");
+    //console.log("[loginWithToken]", auth);
+    return rest
+      .post("/api/auth", {
+        data: { auth },
+        auth: {
+          username: auth.username,
+          password: auth.provider.data,
+        },
+      })
+      .then(
+        (response: AxiosResponse): UserInterface => get(response, "data", {})
+      );
   }
 
   loginWithGoogle(auth: LoginInterface): Promise<UserInterface> {
